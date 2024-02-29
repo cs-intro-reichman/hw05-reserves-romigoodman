@@ -13,7 +13,7 @@ public class GameOfLife {
 		//// (Run one test at a time).
 		test1(fileName);
 		// test2(fileName);
-		test3(fileName, 3);
+		test3(fileName, 7);
 		//// play(fileName);
 	}
 	
@@ -27,22 +27,7 @@ public class GameOfLife {
 	// the count and cellValue functions.
 	private static void test2(String fileName) 
 	{
-		// int[][] board = read(fileName);
-		// for (int i = 0; i <board.length ; i++)  
-		// {
-		// 	System.out.println("cell value");
-        //     for (int j = 0; j < board[0].length; j++) 
-		// 	{
-		// 		System.out.printf("%3s", cellValue(board, i, j));
-		// 	}
-		// 	System.out.println();
-		// 	System.out.println("count value");
-		// 	for (int j = 0; j < board[0].length; j++) 
-		// 	{
-		// 		System.out.printf("%3s", count(board, i, j));
-		// 	}
-		// 	System.err.println();
-		// Testing count method	
+
 			int[][] board = { {0, 1, 0}, {1, 1, 1}, {0, 1, 0} };
 			System.out.println("Count for cell (1,1): " + count(board, 1, 1)); // Expected output: 5
 
@@ -152,7 +137,7 @@ public class GameOfLife {
 	public static int cellValue(int[][] board, int i, int j) {
 		int shouldBe=0;
 		
-		if  (board[i-1][j-1]==1) // If the cell is dead and and has three live neighbors, it becomes alive.
+		if  (board[i][j]==1) // If the cell is alive 
 		{
 
 			if  (count(board, i, j)<2 || count(board, i, j)>3)
@@ -164,7 +149,7 @@ public class GameOfLife {
 				shouldBe=1; // If it has 2 or 3 live neighbors, it remains alive
 			}
 		}
-		else // If the cell is alive ((board[i][j]==0))
+		else // If the cell is dead ((board[i][j]==0))
 		{
 			if (count(board, i, j) == 3)
 			{
