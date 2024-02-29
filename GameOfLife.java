@@ -11,9 +11,9 @@ public class GameOfLife {
 		String fileName = args[0];
 		//// Uncomment the test that you want to execute, and re-compile.
 		//// (Run one test at a time).
-		//// test1(fileName);
-		//// test2(fileName);
-		//// test3(fileName, 3);
+		test1(fileName);
+		test2(fileName);
+		test3(fileName, 3);
 		//// play(fileName);
 	}
 	
@@ -25,11 +25,28 @@ public class GameOfLife {
 		
 	// Reads the data file, and runs a test that checks 
 	// the count and cellValue functions.
-	private static void test2(String fileName) {
+	private static void test2(String fileName) 
+	{
 		int[][] board = read(fileName);
+		for (int i = 0; i <board.length ; i++)  
+		{
+			System.out.println("cell value");
+            for (int j = 0; j < board[0].length; j++) 
+			{
+				System.out.printf("%3s", cellValue(board, i, j));
+			}
+			System.out.println();
+			System.out.println("count value");
+			for (int j = 0; j < board[0].length; j++) 
+			{
+				System.out.printf("%3s", count(board, i, j));
+			}
+			System.err.println();
+		}
+	}
 		//// Write here code that tests that the count and cellValue functions
 		//// are working properly, and returning the correct values.
-	}
+	
 		
 	// Reads the data file, plays the game for Ngen generations, 
 	// and prints the board at the beginning of each generation.
@@ -58,35 +75,97 @@ public class GameOfLife {
 	// and the rightmost columns. Thus the actual board is surrounded by a "frame" of zeros. You can think
 	// of this frame as representing the infinite number of dead cells that exist in every direction.
 	// This function assumes that the input file contains valid data, and does no input testing.
-	public static int[][] read(String fileName) {
+	
+	
+	public static int[][] read(String fileName) 
+	{
 		In in = new In(fileName); // Constructs an In object for reading the input file
 		int rows = Integer.parseInt(in.readLine());
 		int cols = Integer.parseInt(in.readLine());
-		int[][] board = new int[rows + 2][cols + 2];
-		//// Replace the following statement with your code.
-		return null;
+		int[][] board = new int[rows ][cols];
+		////code that constructs and populates a 2D array that represents the game bored and this array will be returned
+		
+		for (int i=0; i<board.length; i++)
+		{
+			String myInput = in.readLine();
+		
+			if (myInput=="")
+			{
+				for (int j=0; j<board[0].length; j++)
+				{
+					board[i][j] = 0;
+				}
+			}
+			
+			else 
+			{
+            	for (int j = 0; j < myInput.length(); j++) 
+			{
+				if (myInput.charAt(j)=='x')
+				{
+				board[i][j] = 1;
+				}
+				else 
+				{
+				board[i][j] = 0;
+				}
+			}
+				for (int j = myInput.length(); j < board[0].length; j++)
+				{
+					board[i][j] = 0;
+				}
+			}
+			
+		}
+		return board;
 	}
 	
 	// Creates a new board from the given board, using the rules of the game.
 	// Uses the cellValue(board,i,j) function to compute the value of each 
 	// cell in the new board. Returns the new board.
 	public static int[][] evolve(int[][] board) {
-		//// Replace the following statement with your code.
-		return null;
+		for (int i = 0; i <board.length ; i++)  
+		{
+			for (int j = 0; j < board[0].length; j++) 
+			{
+				board[i][j]=cellValue(board, i, j);
+			}
+		}
+				return null;
 	}
 
 	// Returns the value that cell (i,j) should have in the next generation.
-	// If the cell is alive (equals 1) and has fewer than two live neighbors, it dies (becomes 0).
-	// If the cell is alive and has two or three live neighbors, it remains alive.
-	// If the cell is alive and has more than three live neighbors, it dies.
-	// If the cell is dead and and has three live neighbors, it becomes alive.
 	// Otherwise the cell does not change. 
 	// Assumes that i is at least 1 and at most the number of rows in the board - 1. 
 	// Assumes that j is at least 1 and at most the number of columns in the board - 1. 
 	// Uses the count(board,i,j) function to count the number of alive neighbors.
 	public static int cellValue(int[][] board, int i, int j) {
-		//// Replace the following statement with your code.
-		return 0;
+		int shouldBe=0;
+		
+		if (board[i][j]==0) // If the cell is dead and and has three live neighbors, it becomes alive.
+		{
+			int count = count(board, i, j);
+			if (count == 3)
+			{
+			shouldBe=1;
+			}
+
+		}
+		// If the cell is alive (equals 1) and has fewer than two live neighbors, it dies (becomes 0).
+		// If the cell is alive and has two or three live neighbors, it remains alive.
+		// If the cell is alive and has more than three live neighbors, it dies.
+		else
+		{
+			if  ((count(board, i, j)<2) || (count(board, i, j)>3))
+			{
+				shouldBe=0;
+			}
+			else if ((count(board, i, j)==2) || (count(board, i, j)==3))
+			{
+				shouldBe=1;
+			}
+		} 
+		return shouldBe;
 	}
 	
 	// Counts and returns the number of living neighbors of the given cell
@@ -94,13 +173,33 @@ public class GameOfLife {
 	// Assumes that i is at least 1 and at most the number of rows in the board - 1. 
 	// Assumes that j is at least 1 and at most the number of columns in the board - 1. 
 	public static int count(int[][] board, int i, int j) {
-		//// Replace the following statement with your code.
-		return 0;
+		int count = 0;
+		for(int k = Math.max(i-1, 0); k<=Math.min(i+1, board.length-1); k++)
+		{
+			for (int l = Math.max(j-1, 0); l<=Math.min(j+1, board[0].length-1); l++)
+			{
+				if (board[k][l]==1)
+				count++;
+			}
+		}
+
+		if (board[i][j]==1)
+		{
+			count--;
+		}
+		return count;
 	}
 	
 	// Prints the board. Alive and dead cells are printed as 1 and 0, respectively.
     public static void print(int[][] arr) {
-		//// Write your code here.
+		for (int i = 0; i <arr.length ; i++)  {
+            for (int j = 0; j < arr[0].length; j++) 
+			{
+                System.out.printf("%3s", arr[i][j]);
+            } 
+			System.out.println(); 
+		}
+            
 	}
 		
     // Displays the board. Living and dead cells are represented by black and white squares, respectively.
