@@ -12,8 +12,8 @@ public class GameOfLife {
 		//// Uncomment the test that you want to execute, and re-compile.
 		//// (Run one test at a time).
 		test1(fileName);
-		test2(fileName);
-		// test3(fileName, 3);
+		// test2(fileName);
+		test3(fileName, 3);
 		//// play(fileName);
 	}
 	
@@ -129,16 +129,19 @@ public class GameOfLife {
 	
 	// Creates a new board from the given board, using the rules of the game.
 	// Uses the cellValue(board,i,j) function to compute the value of each 
-	// cell in the new board. Returns the new board.
+	// cell in the new board. Returns the new board. משהו כאן לא עובד - צריכה לייצר לוח חדש 
 	public static int[][] evolve(int[][] board) {
-		for (int i = 0; i <board.length ; i++)  
+		
+		int[][] newBoard = new int[board.length][board[0].length];
+
+		for (int i = 1; i <board.length ; i++)  
 		{
-			for (int j = 0; j < board[0].length; j++) 
+			for (int j = 1; j < board[0].length; j++) 
 			{
-				board[i][j]=cellValue(board, i, j);
+				newBoard[i][j]=cellValue(board, i, j);
 			}
 		}
-				return board;
+				return newBoard;
 	}
 
 	// Returns the value that cell (i,j) should have in the next generation.
@@ -177,69 +180,26 @@ public class GameOfLife {
 	// Assumes that j is at least 1 and at most the number of columns in the board - 1. 
 	public static int count(int[][] board, int i, int j) {
 		int count = 0;
-		if ((i > board.length) || (j > board.length))
+		int startRow = Math.max(0, i - 1);
+		int endRow = Math.min(board.length - 1, i + 1);
+		int startCol = Math.max(0, j - 1);
+		int endCol = Math.min(board[0].length - 1, j + 1);
+
+
+		for(int k = startRow; k<=endRow; k++)
 		{
-			return 0;
-		}
+			for (int l=startCol; l<=endCol; l++)
+			{
 		
-		else
-		{
-			if	((i == board.length) || (j == board[0].length))
+			if (!(k == i && l == j) && board[k][l] == 1) 
 			{
-				for (int s = i-2; s < i; s++)
-				{
-					for (int t = j-2; t < j; t++)
-					{
-						if((board[s][t] == 1))
-				        {
-					       count++;
-				        }
-					}
-				}
+			count++;
 			}
-
-		else
-		{
-			if ((i-1!=0) && (j-1!=0)) 
-			{
-			for (int s = i - 2; s <= i; s++)
-			{
-			for	(int t = j - 2; t <= j; t++)
-			{
-				if (s == i && t == j) 
-				{
-		 		continue;
-		 		}
-
-				if((board[s][t] == 1))
-				{
-					count++;
-				}
-			}
-			}
-			}
-		
-		}	
-	return count;
 		}
+	}
+			return count;
+
 		}
-	
-		// int startRow = Math.max(0, i - 1);
-		// int endRow = Math.min(board.length - 1, i + 1);
-		// int startCol = Math.max(0, j - 1);
-		// int endCol = Math.min(board[0].length - 1, j + 1);
-
-
-		// for(int k = startRow; k<=endRow; k++)
-		// {
-		// 	for (int l=startCol; l<=endCol; l++)
-		// 	{
-		// 		
-
-		// 		if (board[k][l]==1)
-		// 		count++;
-		// 	}
-		// }
 		
 
 	
